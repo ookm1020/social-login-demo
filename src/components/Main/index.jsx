@@ -7,12 +7,6 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      id: "",
-      name: "",
-      provider: ""
-    };
-
     this.responseFail = this.responseFail.bind(this);
     this.responseKakao = this.responseKakao.bind(this);
     this.responseGoogle = this.responseGoogle.bind(this);

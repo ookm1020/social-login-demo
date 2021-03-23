@@ -3,18 +3,6 @@ import React, { useEffect } from "react";
 import "./Main.css";
 
 let Main = () => {
-  const onLoadedKakaoLib = () => {
-    console.log("라이브러리를 정상적으로 다운로드 받았음...");
-
-    window.Kakao.init(process.env.REACT_APP_KAKAO);
-  };
-
-  const onKakaoLogin = () => {
-    console.log("카카오 로그인 버튼 클릭...");
-
-    console.log(window.Kakao);
-  };
-
   useEffect(() => {
     if (!document.getElementById("KakaoJSSDK")) {
       const scriptKakaoJS = document.createElement("script");
@@ -32,6 +20,27 @@ let Main = () => {
       document.body.appendChild(scriptKakaoJS);
     }
   }, []);
+
+  const onLoadedKakaoLib = () => {
+    window.Kakao.init("f048e8cc24946b058a6d9c8d2113b0d5");
+
+    console.log("Kakao Init Complete...");
+  };
+
+  const onKakaoLogin = () => {
+    window.Kakao.Auth.login({
+      success: (res) => {
+        console.log("success response: ", res);
+
+        alert("Kakao Login Success");
+      },
+      fail: (err) => {
+        console.log("fail error: ", err);
+
+        alert("Kakao Login Fail");
+      },
+    });
+  };
 
   return (
     <div className="Main">

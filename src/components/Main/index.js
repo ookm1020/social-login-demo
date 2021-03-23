@@ -39,6 +39,24 @@ let Main = () => {
 
       document.body.appendChild(scriptGoogleJS);
     }
+
+    if (!document.getElementById("NaverJSSDK")) {
+      const scriptNaverJS = document.createElement("script");
+
+      scriptNaverJS.id = "NaverJSSDK";
+
+      scriptNaverJS.async = true;
+
+      scriptNaverJS.crossorigin = "anonymous";
+
+      scriptNaverJS.src = "//static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js";
+
+      scriptNaverJS.onload = () => {
+        onLoadedNaverLib();
+      };
+
+      document.body.appendChild(scriptNaverJS);
+    }
   }, []);
 
   const onLoadedKakaoLib = () => {
@@ -55,6 +73,39 @@ let Main = () => {
     });
 
     console.log("Google Init Complete...");
+  };
+
+  const onLoadedNaverLib = () => {
+    const naverLogin = new window.naver.LoginWithNaverId({
+      callbackUrl: "http://localhost:3000/",
+      clientId: process.env.REACT_APP_NAVER,
+      isPopup: true,
+      loginButton: { color: "green", type: 1, height: 60 },
+    });
+
+    window.naver.successCallback = (res) => {
+      onNaverLoginSuccess(res);
+    };
+
+    window.naver.failureCallback = (err) => {
+      onNaverLoginFailure(err);
+    };
+
+    naverLogin.init();
+
+    if (window.opener) {
+      naverLogin.getLoginStatus((status) => {
+        if (status) {
+          window.opener.naver.successCallback(naverLogin);
+        } else {
+          window.opener.naver.failureCallback();
+        }
+
+        window.close();
+      });
+    }
+
+    console.log("Naver Init and dosen't Custom Button Complete...");
   };
 
   const onKakaoLogin = () => {
@@ -96,6 +147,16 @@ let Main = () => {
     );
   };
 
+  const onNaverLoginSuccess = (res) => {
+    const { accessToken } = res.accessToken;
+
+    localStorage.setItem("access_token", accessToken);
+  };
+
+  const onNaverLoginFailure = (err) => {
+    console.log(err);
+  };
+
   const getKakaoInfo = () => {
     // get profile
     window.Kakao.API.request({
@@ -110,7 +171,7 @@ let Main = () => {
   };
 
   return (
-    <div className="Main">
+    <div className={window.opener ? "Main hidden" : "Main"}>
       <div onClick={onGoogleLogin} className="img-wrap">
         <img src="/google.png" alt="img" />
       </div>
@@ -123,9 +184,7 @@ let Main = () => {
         <img src="/facebook.png" alt="img" />
       </div>
 
-      <div onClick={() => alert("naver click")} className="img-wrap">
-        <img src="/naver.png" alt="img" />
-      </div>
+      <div id="naverIdLogin" className="img-wrap"></div>
     </div>
   );
 };

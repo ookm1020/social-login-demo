@@ -22,7 +22,7 @@ let Main = () => {
   }, []);
 
   const onLoadedKakaoLib = () => {
-    window.Kakao.init("f048e8cc24946b058a6d9c8d2113b0d5");
+    window.Kakao.init(process.env.REACT_APP_KAKAO);
 
     console.log("Kakao Init Complete...");
   };

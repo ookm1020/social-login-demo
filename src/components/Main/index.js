@@ -111,8 +111,6 @@ let Main = () => {
   const onKakaoLogin = () => {
     window.Kakao.Auth.login({
       success: (res) => {
-        console.log("success response: ", res);
-
         const { access_token, refresh_token } = res;
 
         localStorage.setItem("access_token", access_token);
@@ -158,7 +156,9 @@ let Main = () => {
   };
 
   const getKakaoInfo = () => {
-    // get profile
+    // docs
+    // https://developers.kakao.com/docs/latest/ko/reference/rest-api-reference
+
     window.Kakao.API.request({
       url: "/v1/api/talk/profile",
       success: (res) => {
@@ -178,10 +178,6 @@ let Main = () => {
 
       <div onClick={onKakaoLogin} className="img-wrap">
         <img src="/kakao.png" alt="img" />
-      </div>
-
-      <div onClick={() => alert("facebook click")} className="img-wrap">
-        <img src="/facebook.png" alt="img" />
       </div>
 
       <div id="naverIdLogin" className="img-wrap"></div>

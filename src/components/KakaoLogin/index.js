@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
 
+// utils
+import loadLib from "../../utils/loadLib";
+
 import "./KakaoLogin.css";
 
 let KakaoLogin = () => {
@@ -44,23 +47,9 @@ let KakaoLogin = () => {
   };
 
   useEffect(() => {
-    if (!document.getElementById("KakaoJSSDK")) {
-      const scriptKakaoJS = document.createElement("script");
+    const url = "//developers.kakao.com/sdk/js/kakao.min.js";
 
-      scriptKakaoJS.id = "KakaoJSSDK";
-
-      scriptKakaoJS.async = true;
-
-      scriptKakaoJS.crossorigin = "anonymous";
-
-      scriptKakaoJS.src = "//developers.kakao.com/sdk/js/kakao.min.js";
-
-      scriptKakaoJS.onload = () => {
-        onLoadedKakaoLib();
-      };
-
-      document.body.appendChild(scriptKakaoJS);
-    }
+    loadLib("Kakao", url, onLoadedKakaoLib);
   }, []);
 
   return (

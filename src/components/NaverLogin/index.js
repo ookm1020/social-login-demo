@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
 
+// utils
+import loadLib from "../../utils/loadLib";
+
 import "./NaverLogin.css";
 
 let NaverLogin = () => {
@@ -47,23 +50,9 @@ let NaverLogin = () => {
   };
 
   useEffect(() => {
-    if (!document.getElementById("NaverJSSDK")) {
-      const scriptNaverJS = document.createElement("script");
+    const url = "//static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js";
 
-      scriptNaverJS.id = "NaverJSSDK";
-
-      scriptNaverJS.async = true;
-
-      scriptNaverJS.crossorigin = "anonymous";
-
-      scriptNaverJS.src = "//static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js";
-
-      scriptNaverJS.onload = () => {
-        onLoadedNaverLib();
-      };
-
-      document.body.appendChild(scriptNaverJS);
-    }
+    loadLib("Naver", url, onLoadedNaverLib);
   }, []);
 
   return <div id="naverIdLogin" className="img-wrap"></div>;

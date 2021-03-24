@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
 
+// utils
+import loadLib from "../../utils/loadLib";
+
 import "./GoogleLogin.css";
 
 let GoogleLogin = () => {
@@ -32,23 +35,9 @@ let GoogleLogin = () => {
   };
 
   useEffect(() => {
-    if (!document.getElementById("GoogleJSSDK")) {
-      const scriptGoogleJS = document.createElement("script");
+    const url = "//apis.google.com/js/api.js";
 
-      scriptGoogleJS.id = "GoogleJSSDK";
-
-      scriptGoogleJS.async = true;
-
-      scriptGoogleJS.crossorigin = "anonymous";
-
-      scriptGoogleJS.src = "//apis.google.com/js/api.js";
-
-      scriptGoogleJS.onload = () => {
-        onLoadedGoogleLib();
-      };
-
-      document.body.appendChild(scriptGoogleJS);
-    }
+    loadLib("Google", url, onLoadedGoogleLib);
   }, []);
 
   return (
